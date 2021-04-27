@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopping Cart</title>
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/cart.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,600;0,700;1,100;1,200;1,300;1,400;1,700&display=swap" rel="stylesheet"> 
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+<div class="header">
+	<div class="container">
+		<div class="navbar">
+			<div class="logo">
+				<a href="index.html">
+				<h1>WATCH SHOP</h1></a>
+		</div>
+			<nav>
+				<ul id="MenuItems">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="SanPham.html">Products</a></li>
+					<li><a href="Account.html">Account</a></li>
+
+				</ul>
+			</nav>
+			<a href=""><img src="images/cart.png" width="30px" height="30px" class="btn-cart" alt=""></a>
+			<img src="images/menu.png" class="menu-icon" onclick="menutoggle()" alt="">
+		</div>
+	</div>
+</div>
+	
+	<div class="small-container cart-page">
+		<table>
+			<tr>
+				<th>Sản Phẩm</th>
+				<th>Số Lượng</th>
+				<th>Thành Tiền</th>
+			</tr>
+			<tr>
+				<td>
+					<div class="cart-info">
+						<img src="images/1.jpg" alt="" >
+							 <div>
+							   <h4>DANIEL WELLINGTON DW00100097 </h4>
+							   <h4> <small>Giá: 4.300.000 ₫</small>
+							     <br>
+							     <a href="">Xóa</a>							   </h4>
+					        </div>
+					</div>
+				</td>
+				<td><input type="number" value="1"></td>
+				<td><small>4.300.000 ₫</small></td>
+			</tr>
+			<tr>
+				<td>
+					<div class="cart-info">
+						<img src="images/8.jpg" alt="" >
+							 <div>
+							   <p>OGIVAL 358-66AGR-GL-T</p>
+								<small>Giá: 23.800.000 ₫</small>
+								 <br>
+								 <a href="">Xóa</a>
+							</div>
+					</div>
+				</td>
+				<td><input type="number"  value="1"></td>
+				<td>23.800.000 ₫</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="cart-info">
+						<img src="images/9.jpg" alt="">
+							 <div>
+							   <p>LONGINES L1.611.4.52.2</p>
+								<small>Giá: 30.800.000 ₫</small>
+								 <br>
+								 <a href="">Xóa</a>
+							</div>
+					</div>
+				</td>
+				<td><input type="number" value="1"></td>
+				<td>30.800.000 ₫</td>
+			</tr>
+		</table>
+		<div class="total-price">
+			<table>
+				<tr>
+					<td>Tổng </td>
+					<td>58.900.000 ₫</td>
+				</tr>
+				<tr>
+					<td>Thuế VAT</td>
+					<td>100.000 ₫</td>
+				</tr>
+				<tr>
+					<td>Thành Tiền</td>
+					<td>59.000.000 ₫</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+
+<!------------------------Footer-------------------------------------->
+	<div class="footer">
+		<div class="container">
+			<div class="row">
+				<div class="footer-col-1">
+					<h3>&nbsp;</h3>
+				</div>
+				<div class="footer-col-2">
+					<a href="index.html">
+					<h1>WATCH SHOP</h1></a>
+					<p>&nbsp;</p>
+				</div>
+				<div class="footer-col-3">
+				</div>
+				<div class="footer-col-4">
+					<h3>Follow us</h3>
+					<ul>
+						<li>Facebook</li>
+						<li>Twitter</li>
+						<li>Instagram</li>
+						<li>Youtube</li>
+					</ul>
+				</div>
+			</div>
+			<hr>
+			<p class="copyright">@Copyright 2021 - Thương hiệu độc quyền</p>
+		</div>
+	</div>
+	
+<!------------------------Javascrip cho Menu di chuyển------------------------>
+</body>
+</html>
+	<script>
+		var MenuItems = document.getElementById("MenuItems");
+		
+		MenuItems.style.maxHeight = "0px";
+		
+		function menutoggle(){
+			if(MenuItems.style.maxHeight == "0px")
+				{
+					MenuItems.style.maxHeight = "200px";
+				}
+			else
+				{
+					MenuItems.style.maxHeight = "0px";
+				}
+		}
+	</script>
+	<script>
+		var shoppingCartItems = [];
+		
+		$(document).ready(function() {
+			if (sessionStorage["Shopping-cart-items"] != null ) {
+				shoppingCartItems = JSON.parse(sessionStorage["shopping-cart-items"].toString());
+			}
+			displayShoppingCartItems();
+		});
+		
+		$(."add-to-cart").click(function () {
+			var button = $(this);
+			var id = button.attr("id");
+			var name = button.attr("data-name");
+			var price = button.attr("data-price");
+			var quantity = 1;
+			var item = {
+				id: id,
+				name: name,
+				price: price,
+				quantity: quantity
+			};
+			var exists = false;
+			if (shoppingCartItems.lenght> 0) {
+				$.each(shoppingCartItems, function (index, value) {
+					if(value.id == item.id) {
+						value.quantity++;
+						exists = true;
+						return false;
+					}
+				});
+			}
+			if (!exists) {
+				shoppingCartItems.push(item);
+			}
+			sessionStorage["shopping-cart-items"] = JSON.stringify(shoppingCartItems);
+			displayShoppingCartItem();
+		});
+		$("#button-clear").click(function (){
+			shoppingCartItems= [];
+			sessionStorage["shopping-cart-items"] = JSON.stringify(shoppingCartItems);
+			$("#table-product > tbody").html("");
+		});
+		function displayShoppingCartItems() {
+			if (sessionStorage["shopping-cart-items"] !=null ) {
+				shoppingCartItems = JSON.parse(sessionStorage["shopping-cart-items"].toString());
+				
+				$("#table-products > tbody").html("");
+				$.each(shoppingCartItems, function (index, item){
+					var htmlString = "";
+					htmlString +="<tr>";
+					htmlString +="<td>" + item.id + "</td>";
+					htmlString +="<td>" + item.name + "</td>";
+					htmlString +="<td style='text-align: right'>" + item.price + "</td>";
+					htmlString +="<td style='text-align: right'>" + item.quantity + "</td>";
+					htmlString +="<td style='text-align: right'>" + item.price + item.quantity + "</td>";
+					htmlString +="</tr">;
+					$("#table-products > tbody:last").append(htmlString);
+				});
+			}
+		}
+	</script>
